@@ -13,7 +13,6 @@ enum custom_keycodes {
 };
 
 enum layer_names { _MAIN, _ARABIC, _SYMNUM, _BRDSYS };
-enum custom_keycodes { ARA_MODE = SAFE_RANGE, ENG_MODE }
 
 #define DUAL_FUNC_0 LT(15, KC_F13)
 
