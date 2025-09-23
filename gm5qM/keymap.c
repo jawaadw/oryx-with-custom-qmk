@@ -12,9 +12,24 @@ enum custom_keycodes {
   HSV_169_255_255,
 };
 
-
+enum layer_names { _MAIN, _ARABIC, _SYMNUM, _BRDSYS };
+enum custom_keycodes { ARA_MODE = SAFE_RANGE, ENG_MODE }
 
 #define DUAL_FUNC_0 LT(15, KC_F13)
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+  static bool arabic_active = false;
+  bool now_active = layer_state_cmp(state, _ARABIC);
+
+  if (now_active && !arabic_active) {
+    tap_code16(KC_F24);
+  } else if (!now_active && arabic_active) {
+    tap_code(KC_F23);
+  }
+
+  arabic_active = now_active;
+  return state;
+}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_voyager(
