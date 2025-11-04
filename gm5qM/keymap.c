@@ -8,6 +8,7 @@
 
 enum custom_keycodes {
   RGB_SLD = ZSA_SAFE_RANGE,
+  ST_MACRO_0,
 };
 
 
@@ -16,9 +17,6 @@ enum tap_dance_codes {
   DANCE_0,
 };
 
-#define DUAL_FUNC_0 LT(6, KC_6)
-#define DUAL_FUNC_1 LT(15, KC_E)
-#define DUAL_FUNC_2 LT(3, KC_F19)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_voyager(
@@ -29,9 +27,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                     LT(2, KC_ENTER),KC_LEFT_CTRL,                                   KC_LEFT_SHIFT,  TD(DANCE_0)
   ),
   [1] = LAYOUT_voyager(
-    KC_TRANSPARENT, KC_Q,           KC_W,           KC_E,           LCTL(KC_Y),     KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_LBRC,        KC_RBRC,        
-    KC_TRANSPARENT, DUAL_FUNC_0,    DUAL_FUNC_1,    DUAL_FUNC_2,    KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
+    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, ST_MACRO_0,                                     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_LBRC,        KC_TRANSPARENT, 
+    KC_TRANSPARENT, LSFT(KC_Q),     KC_TRANSPARENT, LSFT(KC_E),     KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_RBRC,        
+    KC_TRANSPARENT, LSFT(KC_A),     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
                                                     KC_TRANSPARENT, MO(5),                                          MO(5),          KC_TRANSPARENT
   ),
@@ -58,8 +56,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [5] = LAYOUT_voyager(
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
-    KC_TRANSPARENT, LSFT(KC_Q),     LSFT(KC_W),     LSFT(KC_E),     LSFT(KC_R),     KC_TRANSPARENT,                                 LSFT(KC_Y),     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, LSFT(KC_P),     KC_TRANSPARENT, 
-    KC_TRANSPARENT, LSFT(KC_A),     LSFT(KC_S),     KC_TILD,        LALT(KC_H),     KC_TRANSPARENT,                                 LSFT(KC_H),     LSFT(KC_J),     LSFT(KC_K),     KC_TRANSPARENT, KC_COLN,        KC_TRANSPARENT, 
+    KC_TRANSPARENT, KC_TRANSPARENT, LSFT(KC_W),     KC_TRANSPARENT, LSFT(KC_R),     KC_TRANSPARENT,                                 LSFT(KC_Y),     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, LSFT(KC_P),     KC_TRANSPARENT, 
+    KC_TRANSPARENT, KC_TRANSPARENT, LSFT(KC_S),     KC_TILD,        LALT(KC_H),     KC_TRANSPARENT,                                 LSFT(KC_H),     LSFT(KC_J),     LSFT(KC_K),     KC_TRANSPARENT, KC_COLN,        KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, LSFT(KC_X),     KC_TRANSPARENT, KC_TRANSPARENT,                                 LSFT(KC_N),     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
                                                     KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT
   ),
@@ -221,52 +219,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     }
     break;
+    case ST_MACRO_0:
+    if (record->event.pressed) {
+      SEND_STRING(SS_TAP(X_F23)SS_DELAY(100)  SS_LCTL(SS_TAP(X_Y))SS_DELAY(100)  SS_TAP(X_F24));
+    }
+    break;
 
-    case DUAL_FUNC_0:
-      if (record->tap.count > 0) {
-        if (record->event.pressed) {
-          register_code16(LSFT(KC_Q));
-        } else {
-          unregister_code16(LSFT(KC_Q));
-        }
-      } else {
-        if (record->event.pressed) {
-          register_code16(LSFT(KC_W));
-        } else {
-          unregister_code16(LSFT(KC_W));
-        }  
-      }  
-      return false;
-    case DUAL_FUNC_1:
-      if (record->tap.count > 0) {
-        if (record->event.pressed) {
-          register_code16(LSFT(KC_A));
-        } else {
-          unregister_code16(LSFT(KC_A));
-        }
-      } else {
-        if (record->event.pressed) {
-          register_code16(LSFT(KC_S));
-        } else {
-          unregister_code16(LSFT(KC_S));
-        }  
-      }  
-      return false;
-    case DUAL_FUNC_2:
-      if (record->tap.count > 0) {
-        if (record->event.pressed) {
-          register_code16(LSFT(KC_E));
-        } else {
-          unregister_code16(LSFT(KC_E));
-        }
-      } else {
-        if (record->event.pressed) {
-          register_code16(LSFT(KC_R));
-        } else {
-          unregister_code16(LSFT(KC_R));
-        }  
-      }  
-      return false;
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);
